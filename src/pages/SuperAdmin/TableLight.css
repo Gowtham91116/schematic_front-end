@@ -1,0 +1,14 @@
+/* TableLight.css */
+.table-container.dark-mode {
+    /* Styles for dark mode */
+    background-color: #333; /* Example dark background color */
+    color: #fff; /* Example light text color */
+  }
+
+  /* TableDark.css */
+.table-container.dark-mode {
+    /* Styles for dark mode */
+    background-color: #222; /* Another example dark background color */
+    color: #ccc; /* Another example light text color */
+  }
+  

@@ -1,13 +1,23 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
 import UserOne from '../../images/user/user-01.png';
+import { useAppContext } from '../../context/AuthContext';
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
+const navigate = useNavigate();
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
+
+  const hanndleLogout = ()=>{
+    localStorage.clear();
+    navigate('/')
+  }
+
+const {manuallyLogged,token} = useAppContext();
+
+console.log(manuallyLogged)
 
   // close on click outside
   useEffect(() => {
@@ -45,13 +55,13 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            Thomas Anree
+           {manuallyLogged?.username}
           </span>
-          <span className="block text-xs">UX Designer</span>
+          <span className="block text-xs">{manuallyLogged?.designation && 'Super Admin'}</span>
         </span>
 
         <span className="h-12 w-12 rounded-full">
-          <img src={UserOne} alt="User" />
+          <img src={manuallyLogged?.profilePic} alt="User" className='w-[53px] h-[50px] object-fill border rounded-full' />
         </span>
 
         <svg
@@ -153,7 +163,7 @@ const DropdownUser = () => {
             </Link>
           </li>
         </ul>
-        <button className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+        <button type='button' onClick={hanndleLogout} className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
           <svg
             className="fill-current"
             width="22"

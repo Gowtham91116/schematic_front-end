@@ -15,6 +15,10 @@ import Settings from './pages/Settings';
 import Tables from './pages/Tables';
 import Alerts from './pages/UiElements/Alerts';
 import Buttons from './pages/UiElements/Buttons';
+import ViewUsers from './pages/SuperAdmin/ViewUsers';
+import { Toaster } from 'react-hot-toast';
+import CreateUsers from './pages/SuperAdmin/CreateUsers';
+import { AppProvider } from './context/AuthContext';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -32,9 +36,21 @@ function App() {
     <Loader />
   ) : (
     <>
+    <AppProvider>
+    <Toaster position='top-center' />
       <Routes>
         <Route
           index
+          element={
+            <>
+              <PageTitle title="eCommerce Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <SignUp />
+            </>
+          }
+        />
+
+<Route
+           path="/super-admin/dashboard"
           element={
             <>
               <PageTitle title="eCommerce Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template" />
@@ -42,15 +58,27 @@ function App() {
             </>
           }
         />
+
         <Route
-          path="/calendar"
+          path="/view-users"
           element={
             <>
               <PageTitle title="Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-              <Calendar />
+              <ViewUsers />
             </>
           }
         />
+
+<Route
+          path="/create-users"
+          element={
+            <>
+              <PageTitle title="Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <CreateUsers />
+            </>
+          }
+        />
+
         <Route
           path="/profile"
           element={
@@ -142,6 +170,7 @@ function App() {
           }
         />
       </Routes>
+    </AppProvider>
     </>
   );
 }

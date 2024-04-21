@@ -1,13 +1,62 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, json } from 'react-router-dom';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import LogoDark from '../../images/logo/logo-dark.svg';
 import Logo from '../../images/logo/logo.svg';
 import DefaultLayout from '../../layout/DefaultLayout';
+import { GoogleLogin } from '@react-oauth/google';
+import { useGoogleLogin } from '@react-oauth/google';
+import API from '../../../API';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const SignIn: React.FC = () => {
+
+// ! O-AUTH LOGIN
+  const loginwithgoogle = () => {
+    window.open(`${API}/auth/google/callback`, "_self")
+  }
+
+  // ! MANUAL LOGIN
+  const navigate = useNavigate();
+  const [input, setInput] = useState({});
+  const [response, setResponse] = useState({});
+
+  console.log(response?.data);
+
+
+  const handleChange = (e: any) => {
+    setInput({ ...input, [e.target.name]: e.target.value })
+  }
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    let data = JSON.stringify(input);
+  axios.request({
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: `${API}/Admin/admin-login`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: data
+    })
+      .then((response: any) => {
+        setResponse(response?.data);
+        window.localStorage.setItem('data', JSON.stringify(response?.data?.data));
+        window.localStorage.setItem('token', response?.data?.token);
+        alert("Login Sucessful")
+        navigate("/super-admin/dashboard")
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
+
+  }
+
   return (
-    <DefaultLayout>
+    // <DefaultLayout>
+    <div className='pt-[120px] px-[200px]'>
       <Breadcrumb pageName="Sign In" />
 
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -156,16 +205,19 @@ const SignIn: React.FC = () => {
                 Sign In to TailAdmin
               </h2>
 
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Email
                   </label>
                   <div className="relative">
                     <input
-                      type="email"
-                      placeholder="Enter your email"
+                      type="text"
+                      required
+                      placeholder="Enter username or email"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      name='username'
+                      onChange={handleChange}
                     />
 
                     <span className="absolute right-4 top-4">
@@ -190,13 +242,16 @@ const SignIn: React.FC = () => {
 
                 <div className="mb-6">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
-                    Re-type Password
+                    Enter Password
                   </label>
                   <div className="relative">
                     <input
                       type="password"
+                      required
                       placeholder="6+ Characters, 1 Capital letter"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      name='password'
+                      onChange={handleChange}
                     />
 
                     <span className="absolute right-4 top-4">
@@ -231,7 +286,7 @@ const SignIn: React.FC = () => {
                   />
                 </div>
 
-                <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
+                <button type='button' onClick={loginwithgoogle} className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
                   <span>
                     <svg
                       width="20"
@@ -268,6 +323,8 @@ const SignIn: React.FC = () => {
                   Sign in with Google
                 </button>
 
+
+
                 <div className="mt-6 text-center">
                   <p>
                     Don’t have any account?{' '}
@@ -281,7 +338,8 @@ const SignIn: React.FC = () => {
           </div>
         </div>
       </div>
-    </DefaultLayout>
+    </div>
+    // {/* </DefaultLayout> */}
   );
 };
 

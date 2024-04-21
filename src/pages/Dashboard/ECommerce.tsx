@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect,useState } from 'react';
 import CardDataStats from '../../components/CardDataStats';
 import ChartOne from '../../components/Charts/ChartOne';
 import ChartThree from '../../components/Charts/ChartThree';
@@ -7,12 +7,63 @@ import ChatCard from '../../components/Chat/ChatCard';
 import MapOne from '../../components/Maps/MapOne';
 import TableOne from '../../components/Tables/TableOne';
 import DefaultLayout from '../../layout/DefaultLayout';
-
+import API from '../../../API.ts'
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import { json } from 'react-router-dom';
+interface UserData {
+  user: {
+    username: string;
+    profilePic: string;
+    email: string;
+    // Add other user-specific fields here
+  };
+}
 const ECommerce: React.FC = () => {
+
+
+  const [userData, setUserData] = useState<UserData | any>(null);
+console.log(userData);
+
+const manuallyLogged = window.localStorage.getItem('data');
+if(!manuallyLogged){
+  window.localStorage.setItem('token',userData?.token);
+  const stringifiedUser = JSON.stringify(userData?.user);
+  window.localStorage.setItem('user',stringifiedUser);
+}
+
+
+
+console.log(userData);
+  useEffect(() => {
+    // Make an API call to fetch user data
+    fetch_O_Auth_UserData();
+}, []); // Empty dependency array ensures this effect runs only once
+
+  const fetch_O_Auth_UserData = async () => {
+    try {
+      // Make a GET request to your server endpoint to fetch user data
+      const response = await fetch(`${API}`); // Update URL as needed
+      if (!response.ok) {
+        throw new Error('Failed to fetch user data');
+      }
+      // Parse the JSON response
+      const userData: UserData = await response.json();
+      // Update state with user data
+      setUserData(userData);
+      
+    } catch (error:any) {
+      console.error('Error fetching user data:', error.message);
+    }
+  };
+
+  
+
   return (
     <DefaultLayout>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
         <CardDataStats title="Total views" total="$3.456K" rate="0.43%" levelUp>
+       
           <svg
             className="fill-primary dark:fill-white"
             width="22"

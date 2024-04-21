@@ -1,6 +1,6 @@
 export type Package = {
   name: string;
-  price: number;
-  invoiceDate: string;
-  status: string;
+  email:string
+  role: string;
+  isActive: boolean;
 };
