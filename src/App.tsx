@@ -20,6 +20,7 @@ import { Toaster } from 'react-hot-toast';
 import CreateUsers from './pages/SuperAdmin/CreateUsers';
 import { AppProvider } from './context/AuthContext';
 import ViewRoles from './pages/SuperAdmin/ViewRoles';
+import CreateRoles from './pages/SuperAdmin/CreateRoles';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -76,6 +77,26 @@ function App() {
             <>
               <PageTitle title="Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template" />
               <ViewRoles />
+            </>
+          }
+        />
+
+<Route
+          path="/create-roles"
+          element={
+            <>
+              <PageTitle title="Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <CreateRoles />
+            </>
+          }
+        />
+
+<Route
+          path="/edit-roles/:_id"
+          element={
+            <>
+              <PageTitle title="Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <CreateRoles />
             </>
           }
         />

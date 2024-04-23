@@ -43,11 +43,11 @@ if(!manuallyLogged){
 
 
 
-
+const [roleId,setRoleId]=useState<string>('')
 
 
   return (
-    <AppContext.Provider value={{manuallyLogged ,token}}>
+    <AppContext.Provider value={{manuallyLogged ,token,setRoleId,roleId}}>
       {children}
     </AppContext.Provider>
   );
