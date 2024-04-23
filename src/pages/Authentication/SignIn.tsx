@@ -22,7 +22,8 @@ const SignIn: React.FC = () => {
   const [input, setInput] = useState({});
   const [response, setResponse] = useState({});
 
-  console.log(response?.data);
+  console.log(response)
+;
 
 
   const handleChange = (e: any) => {
@@ -49,7 +50,7 @@ const SignIn: React.FC = () => {
         navigate("/super-admin/dashboard")
       })
       .catch((error: any) => {
-        console.log(error);
+        setResponse(error?.response?.data);
       });
 
   }
@@ -277,7 +278,7 @@ const SignIn: React.FC = () => {
                     </span>
                   </div>
                 </div>
-
+             <p className='flex justify-center text-sm mb-[24px] text-red-600'> {response?.message} </p>
                 <div className="mb-5">
                   <input
                     type="submit"

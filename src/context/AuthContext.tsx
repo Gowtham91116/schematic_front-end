@@ -1,4 +1,6 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+import axios from 'axios';
+import API from '../../API';
 
 // Define the type for the value provided by the context
 type AppContextValue = {
@@ -40,8 +42,12 @@ if(!manuallyLogged){
 }
 
 
+
+
+
+
   return (
-    <AppContext.Provider value={{manuallyLogged,token}}>
+    <AppContext.Provider value={{manuallyLogged ,token}}>
       {children}
     </AppContext.Provider>
   );

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import UserOne from '../../images/user/user-01.png';
 import { useAppContext } from '../../context/AuthContext';
 
-const DropdownUser = () => {
+const DropdownUser = ({getUserRes}:any) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 const navigate = useNavigate();
   const trigger = useRef<any>(null);
@@ -61,7 +61,7 @@ console.log(manuallyLogged)
         </span>
 
         <span className="h-12 w-12 rounded-full">
-          <img src={manuallyLogged?.profilePic} alt="User" className='w-[53px] h-[50px] object-fill border rounded-full' />
+          <img src={getUserRes?.profilePic} alt="User" className='w-[53px] h-[50px] object-fill border rounded-full' />
         </span>
 
         <svg
