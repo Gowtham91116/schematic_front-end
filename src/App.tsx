@@ -16,11 +16,12 @@ import Tables from './pages/Tables';
 import Alerts from './pages/UiElements/Alerts';
 import Buttons from './pages/UiElements/Buttons';
 import ViewUsers from './pages/SuperAdmin/ViewUsers';
-import { Toaster } from 'react-hot-toast';
+// import { Toaster } from 'react-hot-toast';
 import CreateUsers from './pages/SuperAdmin/CreateUsers';
 import { AppProvider } from './context/AuthContext';
 import ViewRoles from './pages/SuperAdmin/ViewRoles';
 import CreateRoles from './pages/SuperAdmin/CreateRoles';
+import { Toaster, toast } from 'sonner';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -39,7 +40,7 @@ function App() {
   ) : (
     <>
     <AppProvider>
-    <Toaster position='top-center' />
+    <Toaster richColors position='top-center' />
       <Routes>
         <Route
           index

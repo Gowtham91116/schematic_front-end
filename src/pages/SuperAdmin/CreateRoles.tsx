@@ -5,7 +5,8 @@ import DefaultLayout from '../../layout/DefaultLayout';
 import { useAppContext } from '../../context/AuthContext';
 import axios from 'axios';
 import API from '../../../API';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Toaster, toast } from 'sonner';
 
 const CreateRoles = () => {
   const [formData, setFormData] = useState({
@@ -13,87 +14,119 @@ const CreateRoles = () => {
     description: "",
     workReport: {
       create: false,
-      read: false,
+      approval: false,
       update: false,
       delete: false
     },
     expances: {
       create: false,
-      read: false,
+      approval: false,
       update: false,
       delete: false
     }
   });
-  const {_id} = useParams();
+  const navigate = useNavigate();
+  const { _id } = useParams();
   const location = useLocation();
   const geturl = location.pathname;
   const endpoint = geturl.split("/")[1];
-console.log(endpoint)
+  console.log(endpoint)
 
-const [createResponse,setCreateResponse]=useState({});
-console.log(createResponse);
-const {manuallyLogged,token,setRoleId,roleId} = useAppContext();
+  const [createResponse, setCreateResponse] = useState({});
+  const [editResponse, setEditResponse] = useState({});
+  console.log(editResponse);
+  console.log(createResponse);
+  const { manuallyLogged, token, setRoleId, roleId } = useAppContext();
 
-console.log(roleId)
+  console.log(roleId)
 
-console.log(formData);
+  console.log(formData);
 
-  const createRole = (e:any)=>{
+  const createRole = (e: any) => {
     e.preventDefault();
-let data = JSON.stringify(formData);
+    let data = JSON.stringify(formData);
 
-axios.request({
-  method: 'post',
-  maxBodyLength: Infinity,
-  url: `${API}/Admin/create-role`,
-  headers: { 
-    'G.K-Auth_Token': token, 
-    'Content-Type': 'application/json'
-  },
-  data : data
-})
-.then((response:any) => {
-  setCreateResponse(response?.data?.data);
-})
-.catch((error:any) => {
-  console.log(error);
-});
+    axios.request({
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: `${API}/Admin/create-role`,
+      headers: {
+        'G.K-Auth_Token': token,
+        'Content-Type': 'application/json'
+      },
+      data: data
+    })
+      .then((response: any) => {
+        setCreateResponse(response?.data?.data);
+        toast.success("Role created successfully.")
+        navigate('/view-roles');
+      })
+      .catch((error: any) => {
+        toast.error('Update failed')
+        console.log(error);
+      });
 
   };
 
+  const updateRoleById = (e: any) => {
+    e.preventDefault();
 
-  const getRoleById = (id:any)=>{
-    
-let config = {
-  method: 'get',
-  maxBodyLength: Infinity,
-  url: `${API}/Admin/get-admin-role/${id}`,
-  headers: { 
-    'G.K-Auth_Token': token
-   }
-};
+    let data = JSON.stringify(formData);
 
-axios.request(config)
-.then((response) => {
-  setFormData(response?.data?.data);
-})
-.catch((error) => {
-  console.log(error);
-});
+    axios.request({
+      method: 'put',
+      maxBodyLength: Infinity,
+      url: `${API}/Admin/edit-admin-role/${_id}`,
+      headers: {
+        'G.K-Auth_Token': token,
+        'Content-Type': 'application/json'
+      },
+      data: data
+    })
+      .then((response: any) => {
+        setEditResponse(response?.data);
+        toast.success("Role updated successfully.")
+        navigate('/view-roles');
+      })
+      .catch((error: any) => {
+        toast.error('Update failed')
+        console.log(error);
+      });
+
+
+  }
+  const getRoleById = (id: any) => {
+
+    let config = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: `${API}/Admin/get-admin-role/${id}`,
+      headers: {
+        'G.K-Auth_Token': token
+      }
+    };
+
+    axios.request(config)
+      .then((response: any) => {
+        setFormData(response?.data?.data);
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
 
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     getRoleById(_id)
-  },[_id])
+  }, [_id])
 
 
 
 
-  const handleChange = (e:any) => {
+  const handleChange = (e: any) => {
     const { name, value, type, checked } = e.target;
     if (name === 'workReport' || name === 'expances') {
-      setFormData((prevState:any) => ({
+      setFormData((prevState: any) => ({
         ...prevState,
         [name]: {
           ...prevState[name],
@@ -112,7 +145,7 @@ axios.request(config)
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Roles" />
-      <form onSubmit={createRole}>
+      <form onSubmit={endpoint === 'create-roles' ? createRole : updateRoleById}>
         <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
             <h3 className="font-medium text-black dark:text-white">
@@ -154,7 +187,7 @@ axios.request(config)
               <div className="grid grid-cols-5 bg-[#F1F5F9] text-boxdark font-bold px-4 py-2 border-b-2">
                 <div>Role</div>
                 <div>Create</div>
-                <div>Read</div>
+                <div>Approval</div>
                 <div>Update</div>
                 <div>Delete</div>
               </div>
@@ -162,7 +195,7 @@ axios.request(config)
   <div>Work Report</div>
   {Object.entries(formData.workReport).map(([key, value]) => (
     <div key={key}>
-      <input type="checkbox" name="workReport" value={key} checked={value} onChange={handleChange} />
+      <input className={`${key === '_id' && 'hidden'}`} type="checkbox" name="workReport" value={key} checked={value} onChange={handleChange} />
     </div>
   ))}
 </div>
@@ -170,7 +203,7 @@ axios.request(config)
   <div>Expances</div>
   {Object.entries(formData.expances).map(([key, value]) => (
     <div key={key}>
-      <input type="checkbox" name="expances" value={key} checked={value} onChange={handleChange} />
+      <input className={`${key === '_id' && 'hidden'}`} type="checkbox" name="expances" value={key} checked={value} onChange={handleChange} />
     </div>
   ))}
 </div>
