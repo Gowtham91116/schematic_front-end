@@ -22,6 +22,10 @@ import { AppProvider } from './context/AuthContext';
 import ViewRoles from './pages/SuperAdmin/ViewRoles';
 import CreateRoles from './pages/SuperAdmin/CreateRoles';
 import { Toaster, toast } from 'sonner';
+import UserView from './pages/Expances/ViewExpances';
+import ViewExpances from './pages/Expances/ViewExpances';
+import ExpenseForm from './pages/SuperAdmin/CreateExpanses';
+import AuthLoader from './components/Modal/AuthLoader';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -58,6 +62,37 @@ function App() {
             <>
               <PageTitle title="eCommerce Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template" />
               <ECommerce />
+            </>
+          }
+        />
+
+<Route
+           path="/super-admin/create-expanses"
+          element={
+            <>
+              <PageTitle title="eCommerce Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <ExpenseForm />
+            </>
+          }
+        />
+
+
+<Route
+           path="/login-loader/:auth_loader"
+          element={
+            <>
+              <PageTitle title="eCommerce Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <AuthLoader />
+            </>
+          }
+        />
+
+<Route
+           path="/super-admin/view-expances/:_id"
+          element={
+            <>
+              <PageTitle title="eCommerce Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <ViewExpances />
             </>
           }
         />
@@ -193,6 +228,17 @@ function App() {
             </>
           }
         />
+
+<Route
+          path="/auth/signin/:o_auth"
+          element={
+            <>
+              <PageTitle title="Signin | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <SignIn />
+            </>
+          }
+        />
+
         <Route
           path="/auth/signup"
           element={

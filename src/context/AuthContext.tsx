@@ -1,10 +1,11 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
-import axios from 'axios';
-import API from '../../API';
 
 // Define the type for the value provided by the context
 type AppContextValue = {
-  message: string; // Example property
+  manuallyLogged: any;
+  token: string;
+  setRoleId: React.Dispatch<string>;
+  roleId: string;
 };
 
 // Create the context with the specified type for the value
@@ -27,27 +28,25 @@ type AppProviderProps = {
 // Create the provider component
 export function AppProvider({ children }: AppProviderProps): JSX.Element {
   // Define state or other necessary logic here
-  let manuallyLogged
+  let manuallyLogged: any = {};
+  let token: string = '';
 
-let token
+  // Retrieve data from localStorage
+  const manuallyLoggedData = window.localStorage.getItem('user');
+  const tokenData = window.localStorage.getItem('token');
 
-  manuallyLogged  = window.localStorage.getItem('data');
-  manuallyLogged = JSON.parse(manuallyLogged)
-  token  = window.localStorage.getItem('token');
-  
-if(!manuallyLogged){
-  manuallyLogged = window.localStorage.getItem('user');
-  manuallyLogged = JSON.parse(manuallyLogged)
-  token  = window.localStorage.getItem('token');
-}
+  // Parse JSON data if it exists
+  if (manuallyLoggedData) {
+    manuallyLogged = JSON.parse(manuallyLoggedData);
+  }
+  if (tokenData) {
+    token = tokenData;
+  }
 
-
-
-const [roleId,setRoleId]=useState<string>('')
-
+  const [roleId, setRoleId] = useState<string>('');
 
   return (
-    <AppContext.Provider value={{manuallyLogged ,token,setRoleId,roleId}}>
+    <AppContext.Provider value={{ manuallyLogged, token, setRoleId, roleId }}>
       {children}
     </AppContext.Provider>
   );

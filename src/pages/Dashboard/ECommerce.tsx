@@ -13,6 +13,8 @@ import Cookies from 'js-cookie';
 import { json } from 'react-router-dom';
 import MapController from '../../components/Maps/MapController.tsx';
 import MapsMain from '../../components/Maps/MapsMain.tsx';
+import { useAppContext } from '../../context/AuthContext.tsx';
+import Map from '../../components/Maps/Maps.tsx';
 interface UserData {
   user: {
     username: string;
@@ -23,43 +25,93 @@ interface UserData {
 }
 const ECommerce: React.FC = () => {
 
+  const {token}=useAppContext();
 
   const [userData, setUserData] = useState<UserData | any>(null);
-console.log(userData);
-
-const manuallyLogged = window.localStorage.getItem('data');
-if(!manuallyLogged){
-  window.localStorage.setItem('token',userData?.token);
-  const stringifiedUser = JSON.stringify(userData?.user);
-  window.localStorage.setItem('user',stringifiedUser);
-}
 
 
 
-console.log(userData);
-  useEffect(() => {
-    // Make an API call to fetch user data
-    fetch_O_Auth_UserData();
-}, []); // Empty dependency array ensures this effect runs only once
 
-  const fetch_O_Auth_UserData = async () => {
-    try {
-      // Make a GET request to your server endpoint to fetch user data
-      const response = await fetch(`${API}`); // Update URL as needed
-      if (!response.ok) {
-        throw new Error('Failed to fetch user data');
-      }
-      // Parse the JSON response
-      const userData: UserData = await response.json();
-      // Update state with user data
-      setUserData(userData);
-      
-    } catch (error:any) {
-      console.error('Error fetching user data:', error.message);
-    }
-  };
 
-  
+
+  // ! EXPANSES CODE
+
+  const [selectedLocation, setSelectedLocation] = useState({ Latitude: 13, Longitude: 80.2707, ApprovedBy: '' });
+
+  function handleLocationClick(record:any) {
+      setSelectedLocation({ Latitude: record.latituda, Longitude: record.longitude, ApprovedBy: record.ApprovedBy });
+  }
+
+//  const {userExpenses} = useAppContext();
+
+ const expensesData = [
+  {
+    _id: "611f1ef18fb8802c64aeb6c1",
+    ApprovedBy: "John Doe",
+    date: new Date("2024-04-24"),
+    description: "Dinner with clients",
+    amount: 75,
+    currency: "USD",
+    paymentMethod: "Credit Card",
+    staffName:"Sam",
+    receiptNumber: "RECEIPT001",
+    approvalDate: new Date("2024-04-25"),
+    approvalStatus: "Approved",
+    latituda: 37.7749,
+    longitude: -122.4194,
+    category: "Meals and Entertainment",
+    notes: "Great meeting with clients",
+    attachments: ["https://example.com/receipt001.jpg"],
+    isActive: true,
+    createdAt: new Date("2024-04-24T10:00:00"),
+    updatedAt: new Date("2024-04-25T09:30:00"),
+  },
+  {
+    _id: "611f1ef18fb8802c64aeb6c2",
+    ApprovedBy: "Alice Smith",
+    date: new Date("2024-04-23"),
+    description: "Taxi fare",
+    amount: 30,
+    currency: "USD",
+    paymentMethod: "Credit Card",
+    staffName:"Mike",
+    receiptNumber: "RECEIPT002",
+    approvalStatus: "Pending",
+    latituda: 40.7128,
+    longitude: -74.0060,
+    category: "Transportation",
+    notes: "To airport",
+    attachments: ["https://example.com/receipt002.jpg"],
+    isActive: true,
+    createdAt: new Date("2024-04-23T15:00:00"),
+    updatedAt: new Date("2024-04-23T15:00:00"),
+  },
+  // Add more objects as needed...
+];
+
+console.log('token-',token);
+
+const [expanses_data,set_expanses_data]=useState([]);
+
+useEffect(()=>{
+const getExpanse = axios.request({
+    method: 'get',
+    maxBodyLength: Infinity,
+    url: `${API}/Admin/get-expances/pending`,
+    headers: { 
+      'G.K-Auth_Token': token, 
+    },
+  })
+  .then((response) => {
+    set_expanses_data(response?.data?.data);
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+
+console.log(getExpanse)
+
+},[])
 
   return (
 <DefaultLayout>
@@ -142,7 +194,11 @@ console.log(userData);
         <ChartTwo />
    
       </div>
-      <MapsMain/>
+      <div className='my-15px'>
+      {/* <Map Latitude={selectedLocation.Latitude} Longitude={selectedLocation.Longitude} ApprovedBy={selectedLocation.ApprovedBy} expensesData={expanses_data} /> */}
+      {/* <MapController expensesData={expanses_data}  onLocationClick={handleLocationClick}/> */}
+      </div>
+      {/* <MapsMain  /> */}
     </DefaultLayout>
   );
 };

@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import L from 'leaflet';
+import { useAppContext } from '../../context/AuthContext';
 
 function Map(props: any) {
-  const [MapStored, setMapStored] = useState<L.Map | null>(null);
-  const { Latitude = 13.0827, Longitude = 80.2707 } = props;
+  const [map, setMap] = useState<L.Map | null>(null);
 
+  const { Latitude = 13.0827, Longitude = 80.2707, ApprovedBy = '', expensesData } = props;
+console.log(props)
   const mapstyles = {
     height: '400px',
     width: '100%',
@@ -13,24 +15,19 @@ function Map(props: any) {
 
   async function setLocation() {
     try {
-      if (!MapStored) {
-        var map = L.map('map').setView([Latitude, Longitude], 13);
-        setMapStored(map);
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      if (!map) {
+        var mapInstance = L.map('map').setView([Latitude, Longitude], 13);
+        setMap(mapInstance);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           maxZoom: 19,
-          attribution: '&copy; ',
-        }).addTo(map);
-        L.marker([Latitude, Longitude]).addTo(map);
+          attribution: '&copy; OpenStreetMap contributors',
+        }).addTo(mapInstance);
+        expensesData.forEach(expense => {
+          L.marker([expense.latituda, expense.longitude]).addTo(mapInstance)
+            .bindPopup(`<b>${expense.userName}</b>`).openPopup();
+        });
       } else {
-        MapStored.setView(
-          [Latitude, Longitude],
-          10,
-          //     {
-          //   animate: true,
-          //   duration: 1.0,
-          // }
-        );
-        L.marker([Latitude, Longitude]).addTo(MapStored);
+        map.setView([Latitude, Longitude], 10);
       }
     } catch (error) {
       console.log(error);
@@ -38,9 +35,8 @@ function Map(props: any) {
   }
 
   useEffect(() => {
-    console.log('Longitude,Latitude: ', Longitude, Latitude);
     setLocation();
-  }, [Longitude, Latitude]);
+  }, [Latitude, Longitude, ApprovedBy, expensesData]);
 
   return (
     <>

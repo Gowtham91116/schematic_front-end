@@ -12,7 +12,7 @@ const ViewUsers = () => {
   const [getUser, setGetUser] = useState([]);
   const { token } = useAppContext();
   const [creteRes, setCreateRes] = useState<object>({});
-
+console.log(token)
   const getUsers = () => {
     axios.request({
       method: 'get',

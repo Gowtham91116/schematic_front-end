@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, json } from 'react-router-dom';
+import { Link, json, useParams } from 'react-router-dom';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import LogoDark from '../../images/logo/logo-dark.svg';
 import Logo from '../../images/logo/logo.svg';
@@ -11,7 +11,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const SignIn: React.FC = () => {
-
+const {o_auth} = useParams();
+console.log('params-data',o_auth)
 // ! O-AUTH LOGIN
   const loginwithgoogle = () => {
     window.open(`${API}/auth/google/callback`, "_self")
@@ -22,13 +23,9 @@ const SignIn: React.FC = () => {
   const [input, setInput] = useState({});
   const [response, setResponse] = useState({});
 
-  console.log(response)
-;
-
-
   const handleChange = (e: any) => {
     setInput({ ...input, [e.target.name]: e.target.value })
-  }
+  };
 
   const handleSubmit = (e: any) => {
     e.preventDefault();

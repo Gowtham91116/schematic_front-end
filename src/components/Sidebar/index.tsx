@@ -168,9 +168,100 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 </NavLink>
               </li>
 
-              {/* <!-- Menu Item Calendar --> */}
+              <SidebarLinkGroup
+                activeCondition={
+                  pathname === '/forms' || pathname.includes('forms')
+                }
+              >
+                {(handleClick, open) => {
+                  return (
+                    <React.Fragment>
+                      <NavLink
+                        to="#"
+                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/forms' ||
+                          pathname.includes('forms')) &&
+                          'bg-graydark dark:bg-meta-4'
+                          }`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          sidebarExpanded
+                            ? handleClick()
+                            : setSidebarExpanded(true);
+                        }}
+                      >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="18" height="18">
+      <defs>
+        <style>{`.cls-1{fill:#fff}`}</style>
+      </defs>
+      <g id="Layer_2" data-name="Layer 2">
+        <g id="layer_1-2" data-name="layer 1">
+          <path className="cls-1" d="M9 45H1a1 1 0 0 1-1-1V30a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1zm-7-2h6V31H2z"/>
+          <path className="cls-1" d="M27 48h-.22l-18-4 .44-2 17.65 4L46 36.38v-1.14L33.21 38l-.42-2 14-3A1 1 0 0 1 48 34v3a1 1 0 0 1-.55.89l-20 10A1 1 0 0 1 27 48z"/>
+          <path className="cls-1" d="M24 41a.8.8 0 0 1-.27 0l-7-2 .54-2 6.81 2 7.92-.9V36h-7a1 1 0 0 1-.45-.11L16.76 32H9v-2h8a1 1 0 0 1 .45.11L25.24 34H33a1 1 0 0 1 1 1v4a1 1 0 0 1-.89 1l-9 1zM4 39h2v2H4zM29 26a4 4 0 0 1-4-4h2a2 2 0 1 0 2-2 4 4 0 1 1 4-4h-2a2 2 0 1 0-2 2 4 4 0 0 1 0 8z"/>
+          <path className="cls-1" d="M28 25h2v3h-2zM28 10h2v3h-2z"/>
+          <path className="cls-1" d="M29 31a12 12 0 1 1 12-12 12 12 0 0 1-12 12zm0-22a10 10 0 1 0 10 10A10 10 0 0 0 29 9z"/>
+          <path className="cls-1" d="M40 18h7v2h-7zM11 18h7v2h-7zM28 30h2v4h-2zM28 1h2v7h-2z"/>
+          <path className="cls-1" transform="rotate(-45 39.254 8.75)" d="M35.75 7.75h7v2h-7z"/>
+          <path className="cls-1" transform="rotate(-45 19.105 28.886)" d="M16.13 27.89h5.97v2h-5.97z"/>
+          <path className="cls-1" d="M41.73 32.73a1 1 0 0 1-.71-.29l-5-4.95 1.42-1.42 4.22 4.22a17 17 0 1 0-26.85-1.84l-1.61 1.11a19 19 0 1 1 29.24 2.88 1.05 1.05 0 0 1-.71.29z"/>
+          <path className="cls-1" transform="rotate(-45 18.751 8.743)" d="M17.75 5.25h2v7h-2z"/>
+        </g>
+      </g>
+    </svg>
 
-              {/* <!-- Menu Item Profile --> */}
+                        Expense Management
+                        <svg
+                          className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && 'rotate-180'
+                            }`}
+                          width="20"
+                          height="20"
+                          viewBox="0 0 20 20"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            clipRule="evenodd"
+                            d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
+                            fill=""
+                          />
+                        </svg>
+                      </NavLink>
+                      {/* <!-- Dropdown Menu Start --> */}
+                      <div
+                        className={`translate transform overflow-hidden ${!open && 'hidden'
+                          }`}
+                      >
+                        <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
+                          <li>
+                            <NavLink
+                              to="/super-admin/create-expanses"
+                              className={({ isActive }) =>
+                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                             Create Expenses
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
+                              to="/forms/form-layout"
+                              className={({ isActive }) =>
+                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                              Form Layout
+                            </NavLink>
+                          </li>
+                        </ul>
+                      </div>
+                      {/* <!-- Dropdown Menu End --> */}
+                    </React.Fragment>
+                  );
+                }}
+              </SidebarLinkGroup>
               <li>
                 <NavLink
                   to="/profile"

@@ -39,14 +39,9 @@ const Profile = () => {
 
   const { manuallyLogged, token } = useAppContext();
 
-  console.log(manuallyLogged)
-
-
-
-
 
   console.log(manuallyLogged);
-  console.log(token);
+  console.log('token',token);
 
   return (
     <DefaultLayout>

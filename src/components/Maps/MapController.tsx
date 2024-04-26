@@ -1,69 +1,87 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Table, Button } from 'antd';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import DefaultLayout from '../../layout/DefaultLayout';
-import { Link, useNavigate } from 'react-router-dom';
+import { EnvironmentOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 
-const MapController = () => {
-  const [data] = useState([
-    {
-      key: '1',
-      roleName: 'Admin',
-      description: 'Administrator role with full access',
-    },
-    {
-      key: '2',
-      roleName: 'Editor',
-      description: 'Editor role with limited access',
-    },
-    {
-      key: '3',
-      roleName: 'Viewer',
-      description: 'Viewer role with read-only access',
-    },
-  ]);
+const MapController = ({ onLocationClick, expensesData }) => {
+  // const expensesData = [
+  //   {
+  //     _id: "611f1ef18fb8802c64aeb6c1",
+  //     ApprovedBy: "John Doe",
+  //     date: new Date("2024-04-24"),
+  //     description: "Dinner with clients",
+  //     amount: 75,
+  //     currency: "USD",
+  //     paymentMethod: "Credit Card",
+  //     staffName:"Sam",
+  //     receiptNumber: "RECEIPT001",
+  //     approvalDate: new Date("2024-04-25"),
+  //     approvalStatus: "Approved",
+  //     latituda: 37.7749,
+  //     longitude: -122.4194,
+  //     category: "Meals and Entertainment",
+  //     notes: "Great meeting with clients",
+  //     attachments: ["https://example.com/receipt001.jpg"],
+  //     isActive: true,
+  //     createdAt: new Date("2024-04-24T10:00:00"),
+  //     updatedAt: new Date("2024-04-25T09:30:00"),
+  //   },
+  //   {
+  //     _id: "611f1ef18fb8802c64aeb6c2",
+  //     ApprovedBy: "Alice Smith",
+  //     date: new Date("2024-04-23"),
+  //     description: "Taxi fare",
+  //     amount: 30,
+  //     currency: "USD",
+  //     paymentMethod: "Credit Card",
+  //     receiptNumber: "RECEIPT002",
+  //     approvalStatus: "Pending",
+  //     latituda: 40.7128,
+  //     longitude: -74.0060,
+  //     category: "Transportation",
+  //     notes: "To airport",
+  //     attachments: ["https://example.com/receipt002.jpg"],
+  //     isActive: true,
+  //     createdAt: new Date("2024-04-23T15:00:00"),
+  //     updatedAt: new Date("2024-04-23T15:00:00"),
+  //   },
+  //   // Add more objects as needed...
+  // ];
 
-  const navigate = useNavigate();
-
-  const handleEdit = (id) => {
-    navigate(`/edit-roles/${id}`);
+  const handleViewLocation = (record) => {
+    onLocationClick(record);
   };
-
-  const handleDelete = (id) => {
-    // Implement your delete logic here
-    console.log('Deleted role with ID:', id);
-  };
-
+console.log(expensesData)
   const columns = [
     {
-      title: 'Role Name',
-      dataIndex: 'roleName',
-      render: (text, record) => <Link to={`/edit-roles/${record.key}`} style={{ color: 'blue' }}>{text}</Link>,
+      title: 'Staff Name',
+      dataIndex: 'staffName',
+      render: (text: any, record: any) => <Link to={`/super-admin/view-expances/${record._id}`} style={{ color: 'blue' }}>{text}</Link>,
+    },
+    {
+      title: 'Date',
+      dataIndex: 'createdAt',
+      render: (date:any) => <span>{date.toLocaleDateString()}</span>,
     },
     {
       title: 'Description',
-      dataIndex: 'description',
+      dataIndex: 'category',
     },
     {
       title: 'Actions',
       dataIndex: '',
-      render: (text, record) => (
-        <div className='flex gap-3'>
-          <Button onClick={() => handleEdit(record.key)} type="text" icon={<EditOutlined style={{ color: 'black' }} />} />
-          <Button onClick={() => handleDelete(record.key)} type="text" danger icon={<DeleteOutlined style={{ color: 'red' }} />} />
-        </div>
+      render: (_, record) => (
+        <Button type="link" icon={<EnvironmentOutlined />} onClick={() => handleViewLocation(record)} />
       ),
     },
   ];
 
   return (
-    <>
-      <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-        <div className="max-w-full overflow-x-auto">
-          <Table pagination={{ pageSize: 5 }} columns={columns} dataSource={data} />
-        </div>
+    <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+      <div className="max-w-full overflow-x-auto">
+        <Table pagination={{ pageSize: 5 }} columns={columns} dataSource={expensesData ? expensesData:[]} />
       </div>
-      </>
+    </div>
   );
 };
 

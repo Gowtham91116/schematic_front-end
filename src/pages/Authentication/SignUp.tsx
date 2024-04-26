@@ -14,7 +14,7 @@ const SignUp: React.FC = () => {
 
 // ! O-AUTH LOGIN
 const loginwithgoogle = () => {
-  window.open(`${API}/auth/google/callback`, "_self")
+  window.open(`${API}/auth/google/callback`, "_self");
 }
 
 
