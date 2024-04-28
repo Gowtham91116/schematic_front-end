@@ -48,7 +48,7 @@ const MapController = ({ onLocationClick, expensesData }) => {
   //   // Add more objects as needed...
   // ];
 
-  const handleViewLocation = (record) => {
+  const handleViewLocation = (record:any) => {
     onLocationClick(record);
   };
 console.log(expensesData)
@@ -61,7 +61,7 @@ console.log(expensesData)
     {
       title: 'Date',
       dataIndex: 'createdAt',
-      render: (date:any) => <span>{date.toLocaleDateString()}</span>,
+      render: (date:any) => <span>{date}</span>,
     },
     {
       title: 'Description',
@@ -71,7 +71,7 @@ console.log(expensesData)
       title: 'Actions',
       dataIndex: '',
       render: (_, record) => (
-        <Button type="link" icon={<EnvironmentOutlined />} onClick={() => handleViewLocation(record)} />
+        <Button type="link" icon={<EnvironmentOutlined />} onClick={() =>{ handleViewLocation(record); console.log(record)}} />
       ),
     },
   ];

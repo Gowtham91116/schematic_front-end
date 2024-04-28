@@ -15,6 +15,7 @@ import MapController from '../../components/Maps/MapController.tsx';
 import MapsMain from '../../components/Maps/MapsMain.tsx';
 import { useAppContext } from '../../context/AuthContext.tsx';
 import Map from '../../components/Maps/Maps.tsx';
+import { toast } from 'sonner';
 interface UserData {
   user: {
     username: string;
@@ -36,10 +37,10 @@ const ECommerce: React.FC = () => {
 
   // ! EXPANSES CODE
 
-  const [selectedLocation, setSelectedLocation] = useState({ Latitude: 13, Longitude: 80.2707, ApprovedBy: '' });
+  const [selectedLocation, setSelectedLocation] = useState({ Latitude: 13, Longitude: 80.2707, staffName: 'Home' });
 
   function handleLocationClick(record:any) {
-      setSelectedLocation({ Latitude: record.latituda, Longitude: record.longitude, ApprovedBy: record.ApprovedBy });
+      setSelectedLocation({ Latitude: record.latitude, Longitude: record.longitude, staffName: record.staffName });
   }
 
 //  const {userExpenses} = useAppContext();
@@ -108,7 +109,6 @@ const getExpanse = axios.request({
   .catch((error) => {
     console.log(error);
   });
-
 console.log(getExpanse)
 
 },[])
@@ -194,11 +194,11 @@ console.log(getExpanse)
         <ChartTwo />
    
       </div>
-      <div className='my-15px'>
+      <div className='my-[30px]'>
       {/* <Map Latitude={selectedLocation.Latitude} Longitude={selectedLocation.Longitude} ApprovedBy={selectedLocation.ApprovedBy} expensesData={expanses_data} /> */}
-      {/* <MapController expensesData={expanses_data}  onLocationClick={handleLocationClick}/> */}
+      <Map Latitude={selectedLocation.Latitude} Longitude={selectedLocation.Longitude} staffName={selectedLocation.staffName} expensesData={expanses_data} />
+      <MapController expensesData={expanses_data}  onLocationClick={handleLocationClick}/>
       </div>
-      {/* <MapsMain  /> */}
     </DefaultLayout>
   );
 };

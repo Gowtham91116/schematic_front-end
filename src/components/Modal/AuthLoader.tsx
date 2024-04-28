@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import API from "../../../API";
+import { toast } from "sonner";
 
 const AuthLoader = () => {
   const navigate = useNavigate(); // Access history object for navigation
@@ -21,6 +22,7 @@ const AuthLoader = () => {
     const stringifiedUser = JSON.stringify(userData?.user);
     window.localStorage.setItem('user', stringifiedUser);
     // Redirect to "/super-admin/dashboard"
+    
     navigate("/super-admin/dashboard");
   }
 
@@ -38,10 +40,12 @@ const AuthLoader = () => {
       }
       // Parse the JSON response
       const userData: UserData = await response.json();
+  
+
       // Update state with user data
       setUserData(userData);
-
     } catch (error: any) {
+      toast.error("Login Error")
       console.error('Error fetching user data:', error.message);
     }
   };

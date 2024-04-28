@@ -5,8 +5,8 @@ import { useAppContext } from '../../context/AuthContext';
 function Map(props: any) {
   const [map, setMap] = useState<L.Map | null>(null);
 
-  const { Latitude = 13.0827, Longitude = 80.2707, ApprovedBy = '', expensesData } = props;
-console.log(props)
+  const { Latitude = 80.2707, Longitude = 80.2707, staffName = 'Home', expensesData } = props;
+
   const mapstyles = {
     height: '400px',
     width: '100%',
@@ -15,6 +15,7 @@ console.log(props)
 
   async function setLocation() {
     try {
+      console.log(Latitude,Longitude);
       if (!map) {
         var mapInstance = L.map('map').setView([Latitude, Longitude], 13);
         setMap(mapInstance);
@@ -22,11 +23,21 @@ console.log(props)
           maxZoom: 19,
           attribution: '&copy; OpenStreetMap contributors',
         }).addTo(mapInstance);
-        expensesData.forEach(expense => {
-          L.marker([expense.latituda, expense.longitude]).addTo(mapInstance)
-            .bindPopup(`<b>${expense.userName}</b>`).openPopup();
-        });
+        console.log(staffName,'staffName');
+        const popupContent = `<b>${staffName}</b><br>Home ${staffName}`;
+        L.marker([Latitude, Longitude]).addTo(mapInstance)
+            .bindPopup(popupContent).openPopup();
+console.log('if',Latitude,Longitude);
+        // expensesData.forEach((expense:any) => {
+        //  });
+
       } else {
+console.log('else',Latitude,Longitude);
+console.log(staffName,'staffName');
+
+const popupContent = `<b>${staffName}</b>`;
+        L.marker([Latitude, Longitude]).addTo(map)
+            .bindPopup(popupContent).openPopup();
         map.setView([Latitude, Longitude], 10);
       }
     } catch (error) {
@@ -36,7 +47,7 @@ console.log(props)
 
   useEffect(() => {
     setLocation();
-  }, [Latitude, Longitude, ApprovedBy, expensesData]);
+  }, [Latitude, Longitude, staffName, expensesData]);
 
   return (
     <>

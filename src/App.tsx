@@ -147,7 +147,7 @@ function App() {
           }
         />
 
-        <Route
+        {/* <Route
           path="/profile"
           element={
             <>
@@ -155,8 +155,8 @@ function App() {
               <Profile />
             </>
           }
-        />
-        <Route
+        /> */}
+        {/* <Route
           path="/forms/form-elements"
           element={
             <>
@@ -164,8 +164,8 @@ function App() {
               <FormElements />
             </>
           }
-        />
-        <Route
+        /> */}
+        {/* <Route
           path="/forms/form-layout"
           element={
             <>
@@ -173,8 +173,8 @@ function App() {
               <FormLayout />
             </>
           }
-        />
-        <Route
+        /> */}
+        {/* <Route
           path="/tables"
           element={
             <>
@@ -182,7 +182,7 @@ function App() {
               <Tables />
             </>
           }
-        />
+        /> */}
         <Route
           path="/settings"
           element={
